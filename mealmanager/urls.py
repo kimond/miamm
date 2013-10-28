@@ -5,14 +5,20 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'mealmanager.views.home', name='home'),
-    # url(r'^mealmanager/', include('mealmanager.foo.urls')),
+from . import views
 
-    # Uncomment the admin/doc line below to enable admin documentation:
+urlpatterns = patterns('',
+    url(r'^$', views.home.as_view(), name='home'),
+
+    url(r'^recipemanager/', include('recipemanager.urls', namespace="recipemanager")),
+
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+)
+
+urlpatterns += patterns('',
+    (r'^static/(.*)$', 'django.views.static.serve', {
+        'document_root': settings.STATIC_ROOT
+    }),
 )

@@ -130,7 +130,7 @@ THIRD_PARTY_APPS = (
 )
 
 LOCAL_APPS = (
-    #'recipemanager',
+    'recipemanager',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
