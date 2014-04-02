@@ -1,0 +1,32 @@
+{% extends "_layouts/base.html" %}
+{% load url from future %}
+
+{% block page_content %}
+<script type="text/javascript">
+  var goto = function(id){
+    var url = "/recipemanager/viewrecipe/"+id;
+    window.location = url;
+  }
+</script>
+<div class="row">
+    <h2>Liste des recettes</h2>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <tr>
+          <th>Nom</th>
+          <th>Temps de préparation</th>
+          <th>Temps de cuisson</th>
+          <th>Portions</th>
+        </tr>
+        {% for recipe in recipes %}
+        <tr onclick="goto({{recipe.id}})">
+            <td>{{recipe.name}}</td>
+            <td>{{recipe.prepare_time}}</td>
+            <td>{{recipe.cook_time}}</td>
+            <td>{{recipe.portion}}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+</div>
+{% endblock %}

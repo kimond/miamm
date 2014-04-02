@@ -1,9 +1,25 @@
 from django.contrib import admin
-from models import ingredient, recipe, unitlist, recipetype, step
+from recipemanager.models import Recipe, Step, RecipeIngredient
+from recipemanager.forms import *
+
+# Inlines
+
+class RecipeIngredientInline(admin.TabularInline):
+    form  = RecipeIngredientForm
+    model = RecipeIngredient
+    extra = 2
 
 
-admin.site.register(ingredient)
-admin.site.register(unitlist)
-admin.site.register(recipetype)
-admin.site.register(recipe)
-admin.site.register(step)
+class StepInline(admin.TabularInline):
+    form = StepForm
+    model = Step
+    extra = 2
+
+
+class RecipeAdmin(admin.ModelAdmin):
+    form = RecipeForm
+    inlines = (RecipeIngredientInline, StepInline, )
+
+
+admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(QuantityType)
