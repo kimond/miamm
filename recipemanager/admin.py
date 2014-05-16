@@ -1,5 +1,5 @@
 from django.contrib import admin
-from recipemanager.models import Recipe, Step, RecipeIngredient
+from recipemanager.models import Recipe, Step, RecipeIngredient, Ingredient
 from recipemanager.forms import *
 
 # Inlines
@@ -23,3 +23,4 @@ class RecipeAdmin(admin.ModelAdmin):
 
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(QuantityType)
+admin.site.register(Ingredient)

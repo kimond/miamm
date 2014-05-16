@@ -16,6 +16,9 @@ class Recipe(models.Model):
     comment = models.TextField(null=True, blank=True)
     create_date = models.DateField()
 
+    def get_view_url(self):
+        pass
+
     def __unicode__(self):
         return self.name
 

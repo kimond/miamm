@@ -15,11 +15,12 @@ def viewrecipe(request, *args, **kwargs):
     recipeId = kwargs.get("recipeId")
 
     try:
-        recipe = Recipe.objects.get(id=recipeId)
+        recipe = Recipe.objects.select_related().get(id=recipeId)
     except Recipe.DoesNotExist:
         return ""
 
     context = {
         "recipe": recipe
     }
+
     return render(request, "recipemanager/recipeview.html", context)

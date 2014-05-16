@@ -3,5 +3,44 @@
 
 
 {% block page_content %}
-  <h2>{{recipe.name}}</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>{{recipe.name}}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <ul class="list-unstyled">
+        <li><i>Temps de préparation:</i> {{recipe.prepare_time}}</li>
+        <li><i>Cuisson:</i> {{recipe.cook_time}}</li>
+        <li><i>Portions:</i> {{recipe.portion}}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Commentaire:</h4>
+      {{recipe.comment}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Ingrédients</h3>
+      <ul class="list-unstyled">
+        {% for recipeingredient in recipe.recipeingredient_set.all %}
+        <li>{{recipeingredient.ingredient.name}} {{recipeingredient.quantity}} {{recipeingredient.quantity_type}}</li> 
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Étapes de préparation</h3>
+      <ul class="list-unstyled">
+        {% for step in recipe.step_set.all %}
+        <li>{{step.order}}: {{step.explanation}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 {% endblock %}

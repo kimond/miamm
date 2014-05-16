@@ -12,6 +12,8 @@ urlpatterns = patterns('',
 
     url(r'^recipemanager/', include('recipemanager.urls', namespace="recipemanager")),
 
+    url(r'^menu/',include('menumaker.urls', namespace='menu')),
+
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
