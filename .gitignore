@@ -1,3 +1,6 @@
 *.pyc
 *.komodoproject
 mealmanager/settings/local.py
+
+#sqlite
+devdb

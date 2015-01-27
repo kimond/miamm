@@ -101,10 +101,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'mealmanager.urls'
+ROOT_URLCONF = 'miamm.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'mealmanager.wsgi.application'
+WSGI_APPLICATION = 'miamm.wsgi.application'
 
 TEMPLATE_DIRS = (
     root("templates"),
@@ -126,15 +126,24 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'south',
+    'rest_framework',
 )
 
 LOCAL_APPS = (
-    'recipemanager',
-    'menumaker',
+    'recipes',
+    'menus',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

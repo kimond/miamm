@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from menumaker.models import Week
+from menus.models import Week
 
 
 def main(request):
@@ -7,4 +7,4 @@ def main(request):
     context = {
         "weeks":weeks
     }
-    return render(request,"menumaker/menumain.html", context)
+    return render(request,"menus/menumain.html", context)

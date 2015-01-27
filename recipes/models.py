@@ -14,7 +14,7 @@ class Recipe(models.Model):
     cook_time = models.IntegerField(null=True, blank=True)
     portion = models.IntegerField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
-    create_date = models.DateField()
+    create_date = models.DateField(auto_now_add=True)
 
     def get_view_url(self):
         pass
@@ -32,7 +32,7 @@ class Ingredient(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe)
+    recipe = models.ForeignKey(Recipe, related_name='ingredients')
     ingredient = models.ForeignKey(Ingredient)
     quantity = models.IntegerField()
     quantity_type = models.ForeignKey(QuantityType)
@@ -40,9 +40,6 @@ class RecipeIngredient(models.Model):
 
 
 class Step(models.Model):
-    recipe = models.ForeignKey(Recipe)
+    recipe = models.ForeignKey(Recipe, related_name='steps')
     order = models.IntegerField()
     explanation = models.TextField()
-
-
-

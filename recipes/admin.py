@@ -1,6 +1,6 @@
 from django.contrib import admin
-from recipemanager.models import Recipe, Step, RecipeIngredient, Ingredient
-from recipemanager.forms import *
+from recipes.models import Recipe, Step, RecipeIngredient, Ingredient
+from recipes.forms import *
 
 # Inlines
 

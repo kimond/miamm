@@ -1,5 +1,5 @@
 from django.db import models
-from recipemanager.models import Recipe
+from recipes.models import Recipe
 # Create your models here.
 
 class Day(models.Model):
@@ -13,4 +13,3 @@ class Day(models.Model):
 class Week(models.Model):
     number = models.IntegerField(null=True)
     days = models.ManyToManyField(Day)
-
