@@ -25,7 +25,7 @@ class Recipe(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
-    seller = models.CharField(max_length=255)
+    seller = models.CharField(max_length=255, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
