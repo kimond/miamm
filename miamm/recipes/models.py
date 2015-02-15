@@ -16,8 +16,8 @@ class Recipe(models.Model):
     comment = models.TextField(null=True, blank=True)
     create_date = models.DateField(auto_now_add=True)
 
-    def get_view_url(self):
-        pass
+    def get_absolute_url(self):
+        return "/recipes/%i/" % self.id
 
     def __unicode__(self):
         return self.name

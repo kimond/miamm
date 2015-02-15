@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, fields
 from recipes.models import Recipe, Step, RecipeIngredient, Ingredient, QuantityType
 
 
@@ -77,8 +77,9 @@ class StepSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     steps = StepSerializer(many=True, read_only=True)
     ingredients = RecipeIngredientSerializer(many=True, read_only=True)
+    url = fields.URLField(source='get_absolute_url', read_only=True)
 
     class Meta:
         model = Recipe
-        fields = ('id', 'name', 'prepare_time', 'cook_time', 'portion', 'comment', 'steps', 'ingredients')
+        fields = ('id', 'name', 'prepare_time', 'cook_time', 'portion', 'comment', 'steps', 'ingredients','url')
         depth = 1

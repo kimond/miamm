@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^recipes/(?P<pk>[0-9]+)/ingredients/(?P<recipeingredient_pk>[0-9]+)$', recipes_views.RecipeIngredientDetail.as_view()),
 
     url(r'^menus/$', menus_views.MenuList.as_view()),
+    url(r'^menus/(?P<pk>[0-9]+)$', menus_views.MenuDetail.as_view()),
     url(r'^menus/(?P<pk>[0-9]+)/weeks$', menus_views.WeekList.as_view()),
     url(r'^menus/(?P<pk>[0-9]+)/weeks/(?P<week_number>[0-9]+)$', menus_views.WeekDetail.as_view()),
 
