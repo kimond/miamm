@@ -20,7 +20,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipeIngredient
-        fields = ('ingredient', 'quantity', 'quantity_type')
+        fields = ('id','ingredient', 'quantity', 'quantity_type')
 
     def create(self, validated_data):
         ingredient_data = validated_data.pop('ingredient')
@@ -31,39 +31,47 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
         return recipeingredient
 
-
-class StepListSerializer(serializers.ListSerializer):
-    def create(self, validated_data):
-        steps = [Step(**item) for item in validated_data]
-        return Step.objects.bulk_create(steps)
-
     def update(self, instance, validated_data):
-        # Maps for id->instance and id->data item.
-        step_mapping = {step.id: step for step in instance}
-        data_mapping = {item['id']: item for item in validated_data}
+        ingredient_data = validated_data.pop('ingredient')
+        quantity_type_data = validated_data.pop('quantity_type')
+        ingredient = Ingredient.objects.get(name=ingredient_data['name'])
+        quantity_type = QuantityType.objects.get(name=quantity_type_data['name'])
 
-        # Perform creations and updates.
-        ret = []
-        for step_id, data in data_mapping.items():
-            step = step_mapping.get(step_id, None)
-            if step is None:
-                ret.append(self.child.create(data))
-            else:
-                ret.append(self.child.update(step, data))
+        if instance.ingredient != ingredient:
+            instance.ingredient = ingredient
 
-        # Perform deletions.
-        for step_id, step in step_mapping.items():
-            if step_id not in data_mapping:
-                step.delete()
+        if instance.quantity_type != quantity_type:
+            instance.quantity_type = quantity_type
 
-        return ret
+        instance.quantity = validated_data.get('quantity')
+        instance.save()
+
+        return instance
 
 
 class StepSerializer(serializers.ModelSerializer):
     class Meta:
         model = Step
         fields = ('order', 'explanation')
-        #list_serializer_class = StepListSerializer
+
+    def create(self, validated_data):
+        recipe = validated_data.get('recipe')
+        step_order = validated_data.get('order')
+        existing_step = Step.objects.filter(recipe=recipe, order=step_order)
+        if len(existing_step) > 0:
+            raise serializers.ValidationError('This is already a step number '+str(step_order))
+
+        return super(StepSerializer, self).create(validated_data)
+
+    def update(self, instance, validated_data):
+        step_order = validated_data.get('order')
+        if step_order != instance.order:
+            recipe = instance.recipe
+            existing_step = Step.objects.filter(recipe=recipe, order=step_order)
+            if len(existing_step) > 0:
+                raise serializers.ValidationError('This is already a step number '+str(step_order))
+
+        return super(StepSerializer, self).update(instance, validated_data)
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -74,25 +82,3 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = ('id', 'name', 'prepare_time', 'cook_time', 'portion', 'comment', 'steps', 'ingredients')
         depth = 1
-
-    # def create(self, validated_data):
-    #     steps_data = validated_data.pop('steps')
-    #     recipe = Recipe.objects.create(**validated_data)
-    #     Step.objects.create(recipe=recipe, **steps_data)
-    #     return recipe
-
-    # def update(self, instance, validated_data):
-    #     steps_data = validated_data.pop('steps')
-    #     # Unless the application properly enforces that this field is
-    #     # always set, the follow could raise a `DoesNotExist`, which
-    #     # would need to be handled.
-    #     steps = instance.steps
-    #
-    #     instance.name = validated_data.get('name', instance.name)
-    #     instance.prepare_time = validated_data.get('prepare_time', instance.prepare_time)
-    #     instance.save()
-    #
-    #     for step in steps.all():
-    #         step.save()
-    #
-    #     return instance
