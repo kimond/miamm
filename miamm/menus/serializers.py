@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from recipes.serializers import RecipeSerializer
-from menus.models import Day, Menu, Week
+from users.serializers import UserSerializer
+from django.contrib.auth.models import User
+from menus.models import Day, Menu, Week, MenuUser
 
 
 class DaySerializer(serializers.ModelSerializer):
@@ -89,11 +91,44 @@ class WeekSerializer(serializers.ModelSerializer):
         return instance
 
 
+class MenuUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MenuUser
+        fields = ('id', 'user')
+
+    def create(self, validated_data):
+        menu = validated_data.get('menu')
+        user = validated_data.pop('user')
+        existing_user = MenuUser.objects.filter(menu=menu, user=user)
+        if len(existing_user) > 0:
+            raise serializers.ValidationError('This user: '+ user.username +' is already in the menu')
+        menuuser = MenuUser.objects.create(user=user, **validated_data)
+
+        return menuuser
+
+    def update(self, instance, validated_data):
+        user = validated_data.pop('user')
+
+        if instance.user != user:
+            menu = instance.menu
+            existing_user = MenuUser.objects.filter(menu=menu, user=user)
+            if len(existing_user) > 0:
+                raise serializers.ValidationError('This user: '+ user.username +' is already in the menu')
+            instance.user = user
+
+        instance.save()
+
+        return instance
+
+
 class MenuSerializer(serializers.ModelSerializer):
-    week = WeekSerializer(many=True,read_only=True)
+    weeks = WeekSerializer(many=True,read_only=True)
+    users = MenuUserSerializer(many=True,read_only=True)
+
     class Meta:
         model = Menu
-        fields = ('name','owner','week')
+        fields = ('name','owner', 'users','weeks')
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

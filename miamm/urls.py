@@ -24,6 +24,8 @@ urlpatterns = patterns('',
     url(r'^menus/(?P<pk>[0-9]+)$', menus_views.MenuDetail.as_view()),
     url(r'^menus/(?P<pk>[0-9]+)/weeks$', menus_views.WeekList.as_view()),
     url(r'^menus/(?P<pk>[0-9]+)/weeks/(?P<week_number>[0-9]+)$', menus_views.WeekDetail.as_view()),
+    url(r'^menus/(?P<pk>[0-9]+)/users$', menus_views.UserList.as_view()),
+    url(r'^menus/(?P<pk>[0-9]+)/users/(?P<menuuser_id>[0-9]+)$', menus_views.UserDetail.as_view()),
 
     url(r'^admin/', include(admin.site.urls)),
 

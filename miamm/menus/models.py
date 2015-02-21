@@ -30,5 +30,16 @@ class Week(models.Model):
     friday = models.ForeignKey(Day, related_name='friday')
     saturday = models.ForeignKey(Day, related_name='saturday')
 
+    def __unicode__(self):
+        return self.menu.name + ' - ' + str(self.number)
+
     class Meta:
         unique_together = ("menu", "number")
+
+
+class MenuUser(models.Model):
+    menu = models.ForeignKey(Menu, related_name='users')
+    user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = ("menu", "user")
