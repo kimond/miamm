@@ -7,9 +7,10 @@ admin.autodiscover()
 import views
 from recipes import views as recipes_views
 from menus import views as menus_views
+from users import views as users_views
 
 urlpatterns = patterns('',
-    url(r'^$', views.home.as_view(), name='home'),
+    url(r'^$', recipes_views.RecipeList.as_view(), name='home'),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
@@ -26,6 +27,8 @@ urlpatterns = patterns('',
     url(r'^menus/(?P<pk>[0-9]+)/weeks/(?P<week_number>[0-9]+)$', menus_views.WeekDetail.as_view()),
     url(r'^menus/(?P<pk>[0-9]+)/users$', menus_views.UserList.as_view()),
     url(r'^menus/(?P<pk>[0-9]+)/users/(?P<menuuser_id>[0-9]+)$', menus_views.UserDetail.as_view()),
+
+    url(r'^users/(?P<pk>[0-9]+)/profile$', users_views.ProfileDetail.as_view()),
 
     url(r'^admin/', include(admin.site.urls)),
 
