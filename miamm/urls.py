@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     url(r'^$', recipes_views.RecipeList.as_view(), name='home'),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^auth/', include('rest_auth.urls')),
+    url(r'^auth/registration/', include('rest_auth.registration.urls')),
 
     url(r'^recipes/$', recipes_views.RecipeList.as_view()),
     url(r'^recipes/(?P<pk>[0-9]+)/$', recipes_views.RecipeDetail.as_view()),
