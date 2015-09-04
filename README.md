@@ -1,5 +1,6 @@
 Miamm
 ===========
+*This project is under development*
 
 Miamm (from the recursive acronym: "Miamm Is A Meal Manager") is an app that manages your meals.
 
